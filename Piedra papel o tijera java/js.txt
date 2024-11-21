@@ -1,0 +1,118 @@
+class Usuario {
+  constructor() {
+    this.usuarios = [];
+    this.usuarioActual = null;
+  }
+
+  registrarUsuario(username, password) {
+    const existe = this.usuarios.some(u => u.username === username);
+    if (existe) {
+      alert("El usuario ya existe.");
+      return false;
+    }
+    this.usuarios.push({ username, password });
+    alert("Usuario registrado con éxito.");
+    return true;
+  }
+
+  iniciarSesion(username, password) {
+    const usuario = this.usuarios.find(u => u.username === username && u.password === password);
+    if (usuario) {
+      this.usuarioActual = usuario;
+      return true;
+    }
+    alert("Usuario o contraseña incorrectos.");
+    return false;
+  }
+
+  cerrarSesion() {
+    this.usuarioActual = null;
+  }
+}
+
+class Juego {
+  jugar(movimientoUsuario) {
+    const movimientos = ["piedra", "papel", "tijeras"];
+    const movimientoCPU = movimientos[Math.floor(Math.random() * movimientos.length)];
+    const reglas = {
+      piedra: "tijeras",
+      papel: "piedra",
+      tijeras: "papel"
+    };
+
+    if (movimientoUsuario === movimientoCPU) {
+      return `Empate. Ambos eligieron ${movimientoUsuario}`;
+    } else if (reglas[movimientoUsuario] === movimientoCPU) {
+      return `¡Ganaste! ${movimientoUsuario} vence a ${movimientoCPU}`;
+    } else {
+      return `Perdiste. ${movimientoCPU} vence a ${movimientoUsuario}`;
+    }
+  }
+}
+
+const usuarioManager = new Usuario();
+const juego = new Juego();
+
+
+const formContainer = document.getElementById("form-container");
+const loginForm = document.getElementById("login-form");
+const registerForm = document.getElementById("register-form");
+const switchToRegister = document.getElementById("switch-to-register");
+const switchToLogin = document.getElementById("switch-to-login");
+const gameInterface = document.getElementById("game");
+const playerName = document.getElementById("player-name");
+const gameResult = document.getElementById("game-result");
+const logoutButton = document.getElementById("logout");
+
+
+switchToRegister.addEventListener("click", () => {
+  loginForm.classList.add("hidden");
+  registerForm.classList.remove("hidden");
+});
+
+switchToLogin.addEventListener("click", () => {
+  registerForm.classList.add("hidden");
+  loginForm.classList.remove("hidden");
+});
+
+
+registerForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const username = document.getElementById("register-username").value;
+  const password = document.getElementById("register-password").value;
+
+  if (usuarioManager.registrarUsuario(username, password)) {
+    registerForm.reset();
+    registerForm.classList.add("hidden");
+    loginForm.classList.remove("hidden");
+  }
+});
+
+
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const username = document.getElementById("login-username").value;
+  const password = document.getElementById("login-password").value;
+
+  if (usuarioManager.iniciarSesion(username, password)) {
+    formContainer.classList.add("hidden");
+    gameInterface.classList.remove("hidden");
+    playerName.textContent = username;
+  }
+});
+
+
+document.querySelectorAll(".move").forEach(button => {
+  button.addEventListener("click", () => {
+    const movimientoUsuario = button.dataset.move;
+    gameResult.textContent = juego.jugar(movimientoUsuario);
+  });
+});
+
+
+logoutButton.addEventListener("click", () => {
+  usuarioManager.cerrarSesion();
+  gameInterface.classList.add("hidden");
+  formContainer.classList.remove("hidden");
+  loginForm.reset();
+});

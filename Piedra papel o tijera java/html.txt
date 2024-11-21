@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piedra, Papel o Tijeras</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-container" id="form-container">
+     
+      <form id="login-form" class="form">
+        <h2>Inicio de Sesión</h2>
+        <input type="text" id="login-username" placeholder="Usuario" required>
+        <input type="password" id="login-password" placeholder="Contraseña" required>
+        <button type="submit">Iniciar Sesión</button>
+        <p class="switch">¿No tienes cuenta? <span id="switch-to-register">Regístrate</span></p>
+      </form>
+
+      
+      <form id="register-form" class="form hidden">
+        <h2>Registro</h2>
+        <input type="text" id="register-username" placeholder="Usuario" required>
+        <input type="password" id="register-password" placeholder="Contraseña" required>
+        <button type="submit">Registrarse</button>
+        <p class="switch">¿Ya tienes cuenta? <span id="switch-to-login">Inicia Sesión</span></p>
+      </form>
+    </div>
+    
+    <div class="game hidden" id="game">
+      <h2>¡Bienvenido <span id="player-name"></span>!</h2>
+      <p>Elige tu movimiento:</p>
+      <button class="move" data-move="piedra">?? Piedra</button>
+      <button class="move" data-move="papel">?? Papel</button>
+      <button class="move" data-move="tijeras">?? Tijeras</button>
+      <p id="game-result"></p>
+      <button id="logout">Cerrar Sesión</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
